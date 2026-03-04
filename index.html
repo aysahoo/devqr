@@ -91,6 +91,18 @@
       padding: 3rem 0 6rem;
     }
 
+    .hero-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .hero-title-row h1 {
+      margin-bottom: 0;
+    }
+
     h1 {
       font-size: 1.1rem;
       font-weight: 600;
@@ -171,6 +183,31 @@
       border-color: var(--green);
     }
 
+    /* AI copy button */
+    .ai-copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #141414;
+      border: none;
+      border-radius: 8px;
+      padding: 0.65rem 1rem;
+      font-size: 0.8rem;
+      color: var(--text);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s, color 0.2s;
+    }
+    .ai-copy-btn:hover {
+      background: #1a1a1a;
+      color: #fff;
+    }
+    .ai-copy-btn svg { width: 15px; height: 15px; color: var(--muted); }
+    .ai-copy-btn.copied {
+      color: var(--green);
+    }
+    .ai-copy-btn.copied svg { color: var(--green); }
+
     .examples {
       margin-top: 1rem;
       color: var(--muted);
@@ -203,6 +240,16 @@
       text-decoration: none;
     }
     footer a:hover { color: #fff; }
+
+    @media (max-width: 500px) {
+      .hero-title-row {
+        align-items: flex-start;
+      }
+      h1 span {
+        display: block;
+        margin-top: 0.25rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -214,7 +261,13 @@
     </nav>
 
     <main>
-      <h1>qrdev <span>— zero dependency</span></h1>
+      <div class="hero-title-row">
+        <h1>qrdev <span>— zero dependency</span></h1>
+        <button class="ai-copy-btn" id="ai-btn" aria-label="Copy prompt for AI agent">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><rect x="9" y="9" width="11" height="11" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span>Copy for agents</span>
+        </button>
+      </div>
       <p class="intro">Instantly access your dev server from any device on your network. No config. No plugins. No framework lock-in.</p>
 
       <section>
@@ -326,6 +379,32 @@
             btn.classList.remove('copied');
           }, 2000);
         });
+      });
+    });
+
+    // AI button logic
+    const aiBtn = document.getElementById('ai-btn');
+    const aiTextSpan = aiBtn.querySelector('span');
+    const aiPrompt = `Please install and configure the \`qrdev\` package in this project so I can access my local dev server from any device on my Wi-Fi network.
+
+### Steps:
+1. Install it as a dev dependency (\`npm i -D qrdev\`).
+2. Update my \`package.json\`: prepend \`"qrdev"\` to my existing \`"dev"\` script. 
+   - Example: change \`"next dev"\` to \`"qrdev next dev"\`, or \`"vite"\` to \`"qrdev vite"\`.
+   - If there's no dev script, please add one.
+
+*Reference: [qrdev on npm](https://www.npmjs.com/package/qrdev)*`;
+
+    const sparkleSvg = aiBtn.querySelector('svg').outerHTML;
+
+    aiBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(aiPrompt).then(() => {
+        aiBtn.innerHTML = checkSvg + '<span>Copied!</span>';
+        aiBtn.classList.add('copied');
+        setTimeout(() => {
+          aiBtn.innerHTML = sparkleSvg + '<span>Copy for agents</span>';
+          aiBtn.classList.remove('copied');
+        }, 2500);
       });
     });
   </script>
