@@ -6,7 +6,7 @@ on:
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
 
 jobs:
   publish:
@@ -19,4 +19,20 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: npm install -g npm@latest
       - run: npm ci
+      - name: Check if version already published
+        id: check
+        run: |
+          CURRENT=$(node -p "require('./package.json').version")
+          if npm view qrdev@$CURRENT version 2>/dev/null; then
+            echo "bump=true" >> $GITHUB_OUTPUT
+          else
+            echo "bump=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Bump patch version
+        if: steps.check.outputs.bump == 'true'
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          npm version patch -m "chore: bump version to %s [skip ci]"
+          git push
       - run: npm publish --provenance --access public
