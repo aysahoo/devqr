@@ -17,6 +17,27 @@ Just prepend `qrdev` to your dev command. It runs your server, detects the port,
 
 ---
 
+## Why qrdev?
+
+- **Access localhost from your phone** — Scan a QR code and instantly open your dev server on any mobile device.
+- **Test your website on mobile during development** — No more manually typing IP addresses on your phone.
+- **Share your local dev server over Wi-Fi** — Anyone on the same network can scan and connect.
+- **QR code for localhost** — The simplest way to bridge your computer and phone during development.
+- **Works with any dev server** — Vite, Next.js, React, Nuxt, Svelte, Express, Python, Ruby — anything that runs on a port.
+- **Zero dependencies** — Nothing to install besides Node.js. No bloat, no supply chain risk.
+- **No config, no plugins** — Just prepend `qrdev` to your existing command. That's it.
+
+---
+
+## Common Use Cases
+
+- 📱 **"How do I access my dev server from my phone?"** — `qrdev npm run dev`
+- 🔗 **"How to open localhost on mobile?"** — `qrdev vite`
+- 📡 **"How to share my local server on my network?"** — `qrdev next dev`
+- 🧪 **"How to test responsive design on a real device?"** — `qrdev yarn dev`
+
+---
+
 ## Install
 
 ### Global (use anywhere)
@@ -67,6 +88,8 @@ qrdev npm run dev
 qrdev bun run dev
 qrdev yarn dev
 qrdev pnpm dev
+qrdev vite
+qrdev next dev
 qrdev node server.js
 qrdev python -m http.server 8000
 ```

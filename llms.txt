@@ -1,0 +1,68 @@
+# qrdev
+
+> Zero-dependency CLI to access your local dev server from any device on your network via QR code.
+
+## What it does
+
+qrdev wraps any dev server command, detects the port it runs on, finds your local network IP, and displays a QR code in the terminal. Scan the QR code from any phone, tablet, or device on the same Wi-Fi network to instantly open your dev server — no manual IP typing needed.
+
+## Use Cases
+
+- Access localhost from your phone during development
+- Test responsive design on a real mobile device
+- Share your local dev server with others on the same network
+- Preview your website on mobile without deploying
+- QR code for localhost
+
+## Key Features
+
+- Zero dependencies — nothing extra to install
+- Works with any dev server: Vite, Next.js, Nuxt, Svelte, Express, Python, Ruby, etc.
+- Works with any package manager: npm, bun, yarn, pnpm
+- No config files, no plugins, no framework lock-in
+- Just prepend `qrdev` to your existing dev command
+
+## Install
+
+```bash
+npm i -g qrdev
+```
+
+## Usage
+
+```bash
+qrdev npm run dev
+qrdev vite
+qrdev next dev
+qrdev bun run dev
+qrdev yarn dev
+qrdev pnpm dev
+qrdev node server.js
+qrdev python -m http.server 8000
+```
+
+## Per-project Setup
+
+```bash
+npm i -D qrdev
+```
+
+Then in package.json:
+
+```json
+{
+  "scripts": {
+    "dev": "qrdev vite"
+  }
+}
+```
+
+## Requirements
+
+- Node.js >= 14
+- Both devices on the same Wi-Fi / local network
+
+## Links
+
+- npm: https://www.npmjs.com/package/qrdev
+- GitHub: https://github.com/aysahoo/qrdev

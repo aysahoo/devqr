@@ -4,11 +4,40 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>qrdev — Zero-dependency QR code for your dev server</title>
-  <meta name="description" content="Zero-dependency CLI — wrap any dev server command and get a QR code for LAN access. No config, no plugins, no framework lock-in." />
+  <meta name="description" content="Zero-dependency CLI — wrap any dev server command and get a QR code for LAN access. Access localhost from your phone. No config, no plugins, no framework lock-in." />
+  <meta name="keywords" content="qrdev, qr code, dev server, localhost, phone, mobile testing, LAN, network, vite, nextjs, cli, zero dependency" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='white' viewBox='0 0 256 256'><path d='M120,56v48a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V56A16,16,0,0,1,56,40h48A16,16,0,0,1,120,56Zm-16,80H56a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,104,136Zm96-96H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40ZM144,184a8,8,0,0,0,8-8V144a8,8,0,0,0-16,0v32A8,8,0,0,0,144,184Zm64-32H184v-8a8,8,0,0,0-16,0v56H144a8,8,0,0,0,0,16h32a8,8,0,0,0,8-8V168h24a8,8,0,0,0,0-16Zm0,32a8,8,0,0,0-8,8v16a8,8,0,0,0,16,0V192A8,8,0,0,0,208,184Z'/></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+
+  <!-- JSON-LD Structured Data for AI & Search Engine discoverability -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "qrdev",
+    "description": "Zero-dependency CLI tool to access your local dev server from any device on your network via QR code. Just prepend qrdev to your dev command — works with Vite, Next.js, Express, Python, and any dev server.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Cross-platform",
+    "url": "https://www.npmjs.com/package/qrdev",
+    "downloadUrl": "https://www.npmjs.com/package/qrdev",
+    "softwareVersion": "1.1.0",
+    "author": {
+      "@type": "Person",
+      "name": "Ayush Ranjan Sahoo",
+      "url": "https://github.com/aysahoo"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "license": "https://opensource.org/licenses/MIT",
+    "codeRepository": "https://github.com/aysahoo/qrdev"
+  }
+  </script>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -17,6 +46,7 @@
       --muted: #777;
       --border: #2a2a2a;
       --link: #d4d4d4;
+      --green: #4ade80;
     }
     html { scroll-behavior: smooth; }
     body {
@@ -98,20 +128,48 @@
       border-radius: 4px;
     }
 
-    .install-block {
+    /* Copy block */
+    .copy-block {
+      position: relative;
       background: #141414;
       border: none;
       border-radius: 8px;
-      padding: 0.75rem 1rem;
+      padding: 0.75rem 3rem 0.75rem 1rem;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.85rem;
       color: var(--text);
       margin: 1rem 0;
       cursor: pointer;
-      transition: border-color 0.2s;
     }
-    .install-block:hover { border-color: #444; }
-    .install-block .dollar { color: var(--muted); user-select: none; }
+    .copy-block .dollar { color: var(--muted); user-select: none; }
+
+    .copy-btn {
+      position: absolute;
+      top: 50%;
+      right: 0.65rem;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      border-radius: 6px;
+      padding: 0.3rem 0.4rem;
+      cursor: pointer;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .copy-btn:hover {
+      color: var(--text);
+    }
+    .copy-btn svg {
+      width: 15px;
+      height: 15px;
+    }
+    .copy-btn.copied {
+      color: var(--green);
+      border-color: var(--green);
+    }
 
     .examples {
       margin-top: 1rem;
@@ -141,9 +199,8 @@
       color: var(--muted);
     }
     footer a {
-      color: var(--text);
-      text-decoration: underline;
-      text-underline-offset: 2px;
+      color: var(--muted);
+      text-decoration: none;
     }
     footer a:hover { color: #fff; }
   </style>
@@ -172,8 +229,11 @@
       <section>
         <h2>Way 1 — Run directly</h2>
         <p>Install globally and prepend <code>qrdev</code> to any dev command.</p>
-        <div class="install-block" onclick="navigator.clipboard.writeText('npm i -g qrdev')">
-          <span class="dollar">$ </span>npm i -g qrdev
+        <div class="copy-block">
+          <span class="dollar">$ </span><span class="cmd-text">npm i -g qrdev</span>
+          <button class="copy-btn" data-copy="npm i -g qrdev" aria-label="Copy to clipboard">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><rect x="9" y="9" width="11" height="11" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
         </div>
         <p>Then just use it — works with <strong>any</strong> dev server or package manager:</p>
         <div class="examples">
@@ -191,14 +251,18 @@
       <section>
         <h2>Way 2 — Add to your scripts</h2>
         <p>Install as a dev dependency in your project.</p>
-        <div class="install-block" onclick="navigator.clipboard.writeText('npm i -D qrdev')">
-          <span class="dollar">$ </span>npm i -D qrdev
+        <div class="copy-block">
+          <span class="dollar">$ </span><span class="cmd-text">npm i -D qrdev</span>
+          <button class="copy-btn" data-copy="npm i -D qrdev" aria-label="Copy to clipboard">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><rect x="9" y="9" width="11" height="11" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
         </div>
         <p>Then update your <code>package.json</code>:</p>
-        <div class="install-block">
-          "scripts": {<br />
-          &nbsp;&nbsp;"dev": "qrdev &lt;your-dev-command&gt;"<br />
-          }
+        <div class="copy-block">
+          <span class="cmd-text">"scripts": {<br />&nbsp;&nbsp;"dev": "qrdev &lt;your-dev-command&gt;"<br />}</span>
+          <button class="copy-btn" data-copy='"dev": "qrdev <your-dev-command>"' aria-label="Copy to clipboard">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><rect x="9" y="9" width="11" height="11" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
         </div>
         <p>For example:</p>
         <div class="examples">
@@ -234,16 +298,36 @@
     </main>
 
     <footer>
-      <span id="version">v-.-.-</span>
+      <span><span id="version">v-.-.-</span> · <a href="llms.txt" target="_blank">llms.txt</a></span>
       <span>Crafted by <a href="https://x.com/ayushfyi" target="_blank">Ayush</a></span>
     </footer>
   </div>
 
   <script>
+    // Fetch version
     fetch('https://registry.npmjs.org/qrdev/latest')
       .then(r => r.json())
       .then(d => document.getElementById('version').textContent = 'v' + d.version)
       .catch(() => {});
+
+    // Copy buttons
+    const checkSvg = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>';
+    const copySvg = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><rect x="9" y="9" width="11" height="11" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+
+    document.querySelectorAll('.copy-block').forEach(block => {
+      const btn = block.querySelector('.copy-btn');
+      const text = btn.getAttribute('data-copy');
+      block.addEventListener('click', () => {
+        navigator.clipboard.writeText(text).then(() => {
+          btn.innerHTML = checkSvg;
+          btn.classList.add('copied');
+          setTimeout(() => {
+            btn.innerHTML = copySvg;
+            btn.classList.remove('copied');
+          }, 2000);
+        });
+      });
+    });
   </script>
 </body>
 </html>
