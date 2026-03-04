@@ -18,9 +18,38 @@ Just prepend `qrdev` to your dev command. It runs your server, detects the port,
 
 ## Install
 
+### Global (use anywhere)
+
 ```bash
 npm i -g qrdev
 ```
+
+### Local (per project)
+
+```bash
+npm i -D qrdev
+```
+
+Then update your `package.json` scripts to use `qrdev` seamlessly:
+
+```json
+{
+  "scripts": {
+    "dev": "qrdev <your-dev-command>"
+  }
+}
+```
+
+For example:
+
+```json
+"dev": "qrdev vite"
+"dev": "qrdev next dev"
+"dev": "qrdev node server.js"
+"dev": "qrdev python -m http.server 8000"
+```
+
+Now `npm run dev` / `bun run dev` will automatically show a QR code — no extra steps needed.
 
 ---
 
