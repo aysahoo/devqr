@@ -1,64 +1,90 @@
-# devqr
+<p align="center">
+  <h1 align="center">qrdev</h1>
+  <p align="center">Instantly access your dev server from any device on your network.</p>
+  <p align="center">
+    <a href="https://www.npmjs.com/package/qrdev"><img src="https://img.shields.io/npm/v/qrdev?color=blue&label=npm" alt="npm version"></a>
+    <a href="https://www.npmjs.com/package/qrdev"><img src="https://img.shields.io/npm/dm/qrdev?color=green" alt="downloads"></a>
+    <a href="https://github.com/aysahoo/devqr/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/qrdev" alt="license"></a>
+  </p>
+</p>
 
-Wrap any dev server command and instantly get a QR code for LAN access.
+---
 
-No config. No framework lock-in. Just prepend `devqr`.
+Just prepend `qrdev` to your dev command. It runs your server, detects the port, and shows a **QR code** you can scan from any device on the same network.
+
+> No config. No framework lock-in. Works with everything.
+
+---
 
 ## Install
 
 ```bash
-npm i -g devqr
+npm i -g qrdev
 ```
+
+---
 
 ## Usage
 
 ```bash
-devqr <command>
+qrdev <command>
 ```
 
-Works with any dev server:
+Works with **any** dev server or package manager:
 
 ```bash
-devqr npm run dev
-devqr bun run dev
-devqr yarn dev
-devqr pnpm dev
-devqr node server.js
+qrdev npm run dev
+qrdev bun run dev
+qrdev yarn dev
+qrdev pnpm dev
+qrdev node server.js
+qrdev python -m http.server 8000
 ```
 
-## Output
+---
+
+## What you'll see
 
 ```
-🚀 Running: npm run dev
+Running: npm run dev
 
-▲ Next.js ready on http://localhost:3000
+Next.js ready on http://localhost:3000
 
-📱 Scan to open on any device
-🌐 http://192.168.1.45:3000
-⚠️  Make sure both devices are on the same Wi-Fi/network
+Scan to open on any device
+http://192.168.1.45:3000
+Make sure both devices are on the same Wi-Fi/network
 
-█████████████████████████████
-█████████████████████████████
-████ ▄▄▄▄▄ █▄█▄█ ▄▄▄▄▄ ████
-████ █   █ █▄▄ █ █   █ ████
-████ █▄▄▄█ █ ▄ █ █▄▄▄█ ████
-█████████████████████████████
+▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+█ ▄▄▄▄▄ █▀▄▀▄▀▄█▀█ ▄▄▄▄▄ █
+█ █   █ █▄ ▄▀▄▀▄█ █   █ █
+█ █▄▄▄█ █ █▄▀▄ ▄█ █▄▄▄█ █
+▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 ```
+
+---
 
 ## How it works
 
-1. Runs your command as a child process
-2. Watches stdout/stderr for a port (e.g. `localhost:3000`, `:5173`)
-3. Detects your local network IP
-4. Generates a QR code pointing to `http://<your-ip>:<port>`
+| Step | What happens |
+|------|-------------|
+| 1 | Spawns your command as a child process |
+| 2 | Watches stdout/stderr for a port (`localhost:3000`, `:5173`, etc.) |
+| 3 | Detects your local network IP |
+| 4 | Generates a QR code pointing to `http://<your-ip>:<port>` |
 
-Scan the QR from any device on the same Wi-Fi and you're in.
+---
 
 ## Requirements
 
-- Node.js >= 14
+- **Node.js** >= 14
 - Both devices must be on the **same Wi-Fi / local network**
+
+---
+
+## Contributing
+
+Issues and PRs welcome at [github.com/aysahoo/devqr](https://github.com/aysahoo/devqr)
 
 ## License
 
-MIT
+MIT — [Ayush Ranjan Sahoo](https://github.com/aysahoo)

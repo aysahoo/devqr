@@ -21,9 +21,9 @@ function detectPort(output) {
 const [, , cmd, ...args] = process.argv;
 
 if (!cmd) {
-  console.log('Usage: devqr <command>');
-  console.log('Example: devqr npm run dev');
-  console.log('Example: devqr bun run dev');
+  console.log('Usage: qrdev <command>');
+  console.log('Example: qrdev npm run dev');
+  console.log('Example: qrdev bun run dev');
   process.exit(1);
 }
 
