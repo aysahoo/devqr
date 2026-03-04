@@ -19,10 +19,10 @@
   ],
   "author": "Ayush Ranjan Sahoo",
   "license": "MIT",
-  "homepage": "https://github.com/aysahoo/devqr",
+  "homepage": "https://github.com/aysahoo/qrdev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aysahoo/devqr.git"
+    "url": "git+https://github.com/aysahoo/qrdev.git"
   },
   "engines": {
     "node": ">=14"
