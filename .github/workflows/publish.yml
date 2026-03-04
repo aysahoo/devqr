@@ -16,11 +16,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - run: npm install -g npm@latest
-      - run: npm --version
+          registry-url: https://registry.npmjs.org
       - run: npm ci
-      - name: Remove any .npmrc that may interfere with OIDC
-        run: rm -f .npmrc ~/.npmrc
+      - name: Clear default NODE_AUTH_TOKEN to allow pure OIDC
+        run: echo "NODE_AUTH_TOKEN=" >> $GITHUB_ENV
       - name: Check if version already published
         id: check
         run: |
@@ -38,4 +37,4 @@ jobs:
           npm version patch -m "chore: bump version to %s [skip ci]"
           git push
       - name: Publish
-        run: npm publish --provenance --access public --verbose
+        run: npm publish --access public
