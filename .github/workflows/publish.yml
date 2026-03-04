@@ -16,9 +16,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          registry-url: https://registry.npmjs.org
       - run: npm ci
-      - name: Clear default NODE_AUTH_TOKEN to allow pure OIDC
+      - name: Remove .npmrc to allow pure OIDC auth
+        run: rm -f .npmrc ~/.npmrc
+      - name: Unset NODE_AUTH_TOKEN
         run: echo "NODE_AUTH_TOKEN=" >> $GITHUB_ENV
       - name: Check if version already published
         id: check
