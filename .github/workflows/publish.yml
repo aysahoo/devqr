@@ -3,6 +3,9 @@ name: Publish to npm
 on:
   push:
     branches: [main]
+    paths:
+      - 'bin/**'
+      - 'package.json'
 
 permissions:
   id-token: write
