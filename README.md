@@ -48,10 +48,10 @@ qrdev python -m http.server 8000
 ```
 Running: npm run dev
 
-Next.js ready on http://localhost:3000
+<your dev server output>
 
 Scan to open on any device
-http://192.168.1.45:3000
+http://<your-local-ip>:<port>
 Make sure both devices are on the same Wi-Fi/network
 
 [ QR code appears here ]
